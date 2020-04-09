@@ -22,7 +22,6 @@ chisel := ${ScalaSrc}/${DUT}.scala
 # 
 verilog := ${TestBench}/${DUT}/vsrc/${DUT}.v
 ${verilog}:${chisel}
-	mkdir -p ${Generated-Src}/${DUT}
 	mkdir -p ${TestBench}/${DUT}/vsrc
 	mkdir -p ${TestBench}/${DUT}/csrc
 	${SBT} 'runMain ${DUT} -td ${TestBench}/${DUT}/vsrc'
