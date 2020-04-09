@@ -64,11 +64,16 @@ ${exe}:${cpp}
 .PHONY: exe
 exe: ${exe}
 
+
 run:${exe}
 	./${TestBench}/${DUT}/emu-${DUT}.out
 
 wave:run
 	gtkwave ${TestBench}/${DUT}/tb.vcd
+
+clean:
+	rm ${exe} ${cpp} ${verilog}
+
 
 
 
@@ -93,13 +98,7 @@ sbt:
 # 	${SBT} 'test:runMain gcd.DECODERMain --backend-name verilator'
 
 
-clk:
-	${SBT} 'test:runMain gcd.CLKMain --backend-name verilator'
-add:
-	${SBT} 'test:run gcd.AdderTester'
 help:
 	${SBT} 'test:runMain gcd.DECODERMain --help'
 
 
-clean:
-	${SBT} clean
