@@ -5,11 +5,11 @@ import chisel3.experimental._ // To enable experimental features
 
 // module名必须与class名一致，区分大小写
 class TriOctDecoder_Verilog extends BlackBox with HasBlackBoxResource{
-  val io = IO(new Bundle() {
-    val ver_in = Input(UInt(3.W)) // 这个名必须与verilog中的名字一致
-    val ver_out = Output(UInt(8.W))
-  })
-  addResource("/TriOctDecoder_Verilog.v") // 添加源文件,路径root在test/resources内
+    val io = IO(new Bundle() {
+        val ver_in = Input(UInt(3.W)) // 这个名必须与verilog中的名字一致
+        val ver_out = Output(UInt(8.W))
+    })
+    addResource("/TriOctDecoder_Verilog.v") // 添加源文件,路径root在test/resources内
 //   setResource("/MVER1.v") 上下两种皆可，但在chisel3.2之后只能用上边那种
 }
 
@@ -67,22 +67,22 @@ class CR extends Module {
 }
 
 class TriOctDecoderDemo extends Module {
-  val io = IO(new Bundle {
-    val in = Input(UInt(3.W))
-    val out = Output(UInt(8.W))
-  })
+    val io = IO(new Bundle {
+        val in = Input(UInt(3.W))
+        val out = Output(UInt(8.W))
+    })
   // val mverm = Module(new M_BlackBoxInline())
-  io.out := "b0001_0001".U(8.W)
-  val mBram = Module(new CR)
-  val mTriOct = Module(new TriOctDecoder)
-  mTriOct.io.in := io.in
-  mBram.io.in := io.in
-  io.out := mTriOct.io.out
+    io.out := "b0001_0001".U(8.W)
+    val mBram = Module(new CR)
+    //   val mBram1 = Module(new CR)
+    val mTriOct = Module(new TriOctDecoder)
+    mTriOct.io.in := io.in
+    io.out := mTriOct.io.out
   // printf(p"\n\nwoc\n ${Hexadecimal(mTriOct.io.out)}\n\n")
 
   // mTriOct.io.ver_in := io.in
 
 }
 object TriOctDecoderDemo extends App {
-  chisel3.Driver.execute(args, () => new TriOctDecoderDemo)
+    chisel3.Driver.execute(args, () => new TriOctDecoderDemo)
 }

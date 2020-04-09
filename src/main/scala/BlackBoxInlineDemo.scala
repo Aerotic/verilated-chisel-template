@@ -47,18 +47,7 @@ class BlackBoxInlineDemo extends Module {
     mBlackBoxInline.io.in := io.in
     mBlackBoxInline.io.clk := clock
     io.out := mBlackBoxInline.io.out
-// val mverm = Module(new M_BlackBoxInline())
-//   io.out := "b0001_0001".U(8.W)
-//   val mBram = Module(new CR)
-//   val mTriOct = Module(new TriOctDecoder)
-//   mTriOct.io.in := io.in
-//   mBram.io.in := io.in
-//   io.out := mTriOct.io.out
-//   // printf(p"\n\nwoc\n ${Hexadecimal(mTriOct.io.out)}\n\n")
-
-//   // mTriOct.io.in := io.in
-
 }
 object BlackBoxInlineDemo extends App {
-  chisel3.Driver.execute(args, () => new BlackBoxInlineDemo)
+    chisel3.Driver.execute(args, () => new BlackBoxInlineDemo)
 }

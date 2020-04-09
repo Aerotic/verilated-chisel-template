@@ -338,3 +338,13 @@ project/plugins/project/
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 
+testbench/BlackBoxInlineDemo/csrc/*
+testbench/BlackBoxInlineDemo/vsrc/*.json
+testbench/BlackBoxInlineDemo/vsrc/*.fir
+testbench/BlackBoxInlineDemo/vsrc/*.f
+
+testbench/TriOctDecoderDemo/csrc/*
+testbench/TriOctDecoderDemo/vsrc/*.json
+testbench/TriOctDecoderDemo/vsrc/*.fir
+testbench/TriOctDecoderDemo/vsrc/*.f
+
