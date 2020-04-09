@@ -1,7 +1,14 @@
 
 PathToSbtJar = /home/rv/riscv/freedom/rocket-chip/sbt-launch.jar
 SBT ?= java -jar ${PathToSbtJar} ++2.12.4
+
+# chisel源码的位置
+ScalaSrc = ./src/main/scala
+
+# 由chisel生成的源码生成的位置
 Generated-Src = ./generated-src
+
+# 测试相关位置
 TestBench = ./testbench
 
 # 指定verilator
@@ -11,13 +18,16 @@ VERILATOR = verilator
 # DUT 即为编译的目标，在命令行中指定
 
 # 由chisel生成verilog
+chisel := ${ScalaSrc}/${DUT}.scala
+# 
 verilog := ${TestBench}/${DUT}/vsrc/${DUT}.v
-${verilog}:
+${verilog}:${chisel}
 	mkdir -p ${Generated-Src}/${DUT}
-	${SBT} 'runMain ${DUT} -td ${Generated-Src}/${DUT}'
 	mkdir -p ${TestBench}/${DUT}/vsrc
 	mkdir -p ${TestBench}/${DUT}/csrc
-	cp ${Generated-Src}/${DUT}/* ${TestBench}/${DUT}/vsrc
+	${SBT} 'runMain ${DUT} -td ${TestBench}/${DUT}/vsrc'
+
+# cp ${Generated-Src}/${DUT}/* ${TestBench}/${DUT}/vsrc
 
 .PHONY: verilog
 verilog: ${verilog}
@@ -39,15 +49,22 @@ ${cpp}: ${testcpp} ${verilog}
 	-o ../emu-${DUT}.out
 # 由于makefile的依赖目标无法解析tb.cpp相对路径，故需要进入该文件夹内运行
 
+.PHONY: cpp
+cpp: ${cpp}
+
 
 # 生成可执行emu文件
-exe:${cpp}
+exe := ${TestBench}/${DUT}/emu-${DUT}.out
+${exe}:${cpp}
 	${MAKE} -C ${TestBench}/${DUT}/csrc -f V${DUT}.mk
 	rm ${TestBench}/${DUT}/csrc/*.d
 	rm ${TestBench}/${DUT}/csrc/*.o
 	rm ${TestBench}/${DUT}/csrc/*.a
 
-run:exe
+.PHONY: exe
+exe: ${exe}
+
+run:${exe}
 	./${TestBench}/${DUT}/emu-${DUT}.out
 
 wave:run
