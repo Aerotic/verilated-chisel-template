@@ -88,15 +88,15 @@ module TriOctDecoderDemo(
   input  [2:0] io_in,
   output [7:0] io_out
 );
-  wire  mTriOct_clock; // @[TriOctDecoderDemo.scala 78:23]
-  wire [2:0] mTriOct_io_in; // @[TriOctDecoderDemo.scala 78:23]
-  wire [7:0] mTriOct_io_out; // @[TriOctDecoderDemo.scala 78:23]
-  TriOctDecoder mTriOct ( // @[TriOctDecoderDemo.scala 78:23]
+  wire  mTriOct_clock; // @[TriOctDecoderDemo.scala 75:25]
+  wire [2:0] mTriOct_io_in; // @[TriOctDecoderDemo.scala 75:25]
+  wire [7:0] mTriOct_io_out; // @[TriOctDecoderDemo.scala 75:25]
+  TriOctDecoder mTriOct ( // @[TriOctDecoderDemo.scala 75:25]
     .clock(mTriOct_clock),
     .io_in(mTriOct_io_in),
     .io_out(mTriOct_io_out)
   );
-  assign io_out = mTriOct_io_out; // @[TriOctDecoderDemo.scala 75:10 TriOctDecoderDemo.scala 81:10]
+  assign io_out = mTriOct_io_out; // @[TriOctDecoderDemo.scala 74:12 TriOctDecoderDemo.scala 77:12]
   assign mTriOct_clock = clock;
-  assign mTriOct_io_in = io_in; // @[TriOctDecoderDemo.scala 79:17]
+  assign mTriOct_io_in = io_in; // @[TriOctDecoderDemo.scala 76:19]
 endmodule

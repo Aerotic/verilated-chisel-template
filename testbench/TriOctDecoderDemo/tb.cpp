@@ -15,7 +15,7 @@ VerilatedVcdC *mTracer; // 波形生成对象指针
 vluint64_t main_time = 0;         // 仿真时间戳
 const vluint64_t sim_time = 100; // 最大仿真时间戳
 
-#define STEP  dut->clock = 1;dut->eval();mTracer->dump(main_time);main_time++;dut->clock = 0
+// #define STEP  
 
 
 int main(int argc, char **argv)
@@ -33,7 +33,6 @@ int main(int argc, char **argv)
     mTracer->open("./testbench/TriOctDecoderDemo/tb.vcd"); // 指定输出波形文件的文件名
 
     int count = 0;
-    int count1 = 0;
     dut->clock = 0; // 时钟初始电位0
     dut->reset = 1;
     mTracer->dump(main_time); // 波形文件写入步进
@@ -44,41 +43,24 @@ int main(int argc, char **argv)
     // Loop
     while (!Verilated::gotFinish() && main_time < sim_time)
     {
-        STEP;
-        // mTracer->dump(main_time); // 波形文件写入步进
-        // if (count > 3 && count < 9)
-        // {
-        //     /* code */
-        //     dut->vLong[0] = 0;
-        //     printf ("*128***\n%x %x %x %x",dut->vLong[0],dut->vLong[1],dut->vLong[2],dut->Decoder__DOT__vSee[3]);
-        //     printf ("\n*256*1**\n%x %x %x %x",dut->Decoder__DOT__vSee[0],dut->Decoder__DOT__vSee[1],dut->Decoder__DOT__vSee[2],dut->Decoder__DOT__vSee[3]);
-        //     printf ("\n*256*2**\n%x %x %x %x",dut->Decoder__DOT__vSee[4],dut->Decoder__DOT__vSee[5],dut->Decoder__DOT__vSee[6],dut->Decoder__DOT__vSee[7]);
-        //     dut->eval();          // 仿真时间步进 /// Evaluate the model.  Application must call when inputs change.
-        //     mTracer->dump(main_time); // 波形文件写入步进
-        //     printf("\n******");
-        //     break;
-        // }
-        // // 仿真过程
-        // dut->reset = 0;
-        // dut->S = count;       // 模块S输出递增
-        // dut->clock = ~dut->clock;
-        // // dut->eval();          // 仿真时间步进 /// Evaluate the model.  Application must call when inputs change.
-        // // mTracer->dump(main_time); // 波形文件写入步进
-        // // dut->clock = 1;
-        // dut->eval();          // 仿真时间步进 /// Evaluate the model.  Application must call when inputs change.
-        // mTracer->dump(main_time); // 波形文件写入步进
-        // // 可能在dump()中， main_time代表的是当前步的时刻, dump(main_time)是记录下此刻的各个信号的值
-        // // 源代码(在verilated_vcs_c.h中)声明如下
-        // // // Inside dumping routines, called each cycle to make the dump
-        // // void dump     (vluint64_t timeui);
-        // count++;
-        // main_time++;
-        // std::cout<<std::endl;
-        // std::cout<<std::endl;
-        // std::cout<<std::endl;
-        // printf("dut->s is %x dut->out is %x count is %d\n",dut->Decoder__DOT__mEmpty__DOT__acer,dut->out,count);
+        /**
+         * 上升沿信号赋值
+        */
+        dut->io_in = count++;
 
-        // main_time++;
+        // 时钟跳1
+        dut-> clock = 1;
+        dut -> eval();
+        mTracer->dump(main_time++);
+        printf("io_in is %x io_out is %x\n", dut->io_in,dut->io_out);
+
+
+        /**
+         * 下降沿信号赋值
+        */
+        dut-> clock = 0;
+        dut->eval();
+        mTracer->dump(main_time++);
     }
         std::cout<<std::endl;
         std::cout<<std::endl;

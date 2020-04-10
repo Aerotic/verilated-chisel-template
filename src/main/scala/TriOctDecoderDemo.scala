@@ -71,17 +71,10 @@ class TriOctDecoderDemo extends Module {
         val in = Input(UInt(3.W))
         val out = Output(UInt(8.W))
     })
-  // val mverm = Module(new M_BlackBoxInline())
     io.out := "b0001_0001".U(8.W)
-    val mBram = Module(new CR)
-    //   val mBram1 = Module(new CR)
     val mTriOct = Module(new TriOctDecoder)
     mTriOct.io.in := io.in
     io.out := mTriOct.io.out
-  // printf(p"\n\nwoc\n ${Hexadecimal(mTriOct.io.out)}\n\n")
-
-  // mTriOct.io.ver_in := io.in
-
 }
 object TriOctDecoderDemo extends App {
     chisel3.Driver.execute(args, () => new TriOctDecoderDemo)
