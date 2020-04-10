@@ -1,5 +1,5 @@
 如何使用
-----------
+============
 [toc]
 
 # 0 运行机制简介
@@ -100,3 +100,67 @@ object TriOctDecoderDemo extends App {
     chisel3.Driver.execute(args, () => new TriOctDecoderDemo)
 }
 ```
+
+# 2 编译目标说明
+编译目标有一个依赖链，可用以增量编译，比如：
+- 若scala代码有相关改动，且希望运行新的仿真
+    ```shell
+    make DUT=TriOctDecoderDemo run
+    ```
+    运行以上指令，会从sbt开始，自动编译生成相关文件，完事后运行仿真可执行文件
+
+- 若scala代码无改动，改动了tb.cpp 且希望运行新的仿真
+    ```shell
+    make DUT=TriOctDecoderDemo run
+    ```
+    运行以上指令，会跳过verilog生成，从生成cpp开始，自动编译生成相关文件，完事后运行仿真可执行文件
+
+
+以[TriOctDecoderDemo.scala](./src/main/scala/TriOctDecoderDemo.scala)为例
+
+### **verilog**
+```shell
+make DUT=TriOctDecoderDemo verilog
+```
+由chisel生成verilog，即TriOctDecoderDemo.v ，到 testbench/TriOctDecoderDemo/vsrc
+
+### **cpp**
+```shell
+make DUT=TriOctDecoderDemo cpp
+```
+若已存在testbench/TriOctDecoderDemo/tb.cpp，由verilog生成相关cpp文件及makefile文件；若无若已存在testbench/TriOctDecoderDemo/tb.cpp 则报错
+
+### **exe**
+```shell
+make DUT=TriOctDecoderDemo exe
+```
+运行 testbench/TriOctDecoderDemo/csrc/VTriOctDecoderDemo.mk 生成 emu-TriOctDecoderDemo.out 到testbench/TriOctDecoderDemo/ 根目录下
+
+### **run**
+```shell
+make DUT=TriOctDecoderDemo run
+```
+运行 testbench/TriOctDecoderDemo/emu-TriOctDecoderDemo.out，相关波形文件生成路径在tb.cpp中设置
+
+### **wave**
+```shell
+make DUT=TriOctDecoderDemo wave
+```
+查看波形，这个比较随意，可根据需要修改
+
+### **clean**
+```shell
+make DUT=TriOctDecoderDemo clean
+```
+删除：
+- testbench/TriOctDecoderDemo/vsrcTriOctDecoderDemo.v
+- testbench/TriOctDecoderDemo/csrc/VTriOctDecoderDemo.cpp
+- testbench/TriOctDecoderDemo/emu-TriOctDecoderDemo.out
+
+
+
+
+# 3 特殊情况的处理
+
+## Nothing to be done for XXXX
+例如黑盒类的外部verilog文件不在增量编译的监控范围内，若外部verilog文件发生改动，不会触发增量编译，编译的结果是滞后的。故需要 clean 一下 删除中间文件，再次运行相应的指令即可
