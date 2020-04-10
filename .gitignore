@@ -348,3 +348,7 @@ testbench/TriOctDecoderDemo/vsrc/*.json
 testbench/TriOctDecoderDemo/vsrc/*.fir
 testbench/TriOctDecoderDemo/vsrc/*.f
 
+testbench/BlackBoxResourceDemo/csrc/*
+testbench/BlackBoxResourceDemo/vsrc/*.json
+testbench/BlackBoxResourceDemo/vsrc/*.fir
+testbench/BlackBoxResourceDemo/vsrc/*.f
