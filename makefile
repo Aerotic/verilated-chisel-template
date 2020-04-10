@@ -65,7 +65,7 @@ exe: ${exe}
 
 
 run:${exe}
-	./${TestBench}/${DUT}/emu-${DUT}.out
+	./${exe}
 
 wave:run
 	gtkwave ${TestBench}/${DUT}/tb.vcd
